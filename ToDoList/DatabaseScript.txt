@@ -1,0 +1,265 @@
+﻿USE [Database]
+GO
+/****** Object:  Table [dbo].[AllGoals]    Script Date: 20/06/2022 14:35:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AllGoals](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Goal] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_AllGoals] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CompletedGoals]    Script Date: 20/06/2022 14:35:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CompletedGoals](
+	[int] [int] IDENTITY(1,1) NOT NULL,
+	[Goal] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_CompletedGoals] PRIMARY KEY CLUSTERED 
+(
+	[int] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LongTerm]    Script Date: 20/06/2022 14:35:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LongTerm](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Goal] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_LongTerm] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MidTerm]    Script Date: 20/06/2022 14:35:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MidTerm](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Goal] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_MidTerm] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ShortTerm]    Script Date: 20/06/2022 14:35:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ShortTerm](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Goal] [nvarchar](200) NOT NULL,
+ CONSTRAINT [PK_ShortTerm] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  StoredProcedure [dbo].[CompletedGoal_SearchList]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[CompletedGoal_SearchList]
+
+as
+begin
+
+
+select *
+from CompletedGoals
+
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[deleteCompletedGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+create procedure [dbo].[deleteCompletedGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+DELETE FROM CompletedGoals WHERE Goal = @Goal
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[deleteGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE procedure [dbo].[deleteGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+DELETE FROM LongTerm WHERE Goal = @Goal
+DELETE FROM MidTerm WHERE Goal = @Goal
+DELETE FROM ShortTerm WHERE Goal = @Goal
+DELETE FROM AllGoals WHERE Goal = @Goal
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[insertCompletedGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[insertCompletedGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+insert into CompletedGoals(Goal)
+values (@Goal)
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[InsertLongTermGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[InsertLongTermGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+insert into dbo.LongTerm (Goal)
+values (@Goal)
+
+insert into dbo.AllGoals (Goal)
+values (@Goal)
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMidTermGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[InsertMidTermGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+insert into dbo.MidTerm (Goal)
+values (@Goal)
+
+insert into dbo.AllGoals (Goal)
+values (@Goal)
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[InsertShortTermGoal]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[InsertShortTermGoal]
+@Goal nvarchar(200)
+
+as
+begin
+
+insert into dbo.ShortTerm (Goal)
+values (@Goal)
+
+insert into dbo.AllGoals (Goal)
+values (@Goal)
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[LongTerm_SearchList]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LongTerm_SearchList]
+
+as
+begin
+
+
+select *
+from LongTerm
+
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[MidTerm_SearchList]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[MidTerm_SearchList]
+
+as
+begin
+
+
+select *
+from MidTerm
+
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[SearchAllGoals]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SearchAllGoals]
+
+as
+begin
+
+
+select *
+from AllGoals
+
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[ShortTerm_SearchList]    Script Date: 20/06/2022 14:35:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ShortTerm_SearchList]
+
+as
+begin
+
+
+select *
+from ShortTerm
+
+
+end
+GO
